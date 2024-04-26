@@ -1,6 +1,8 @@
 services:
   - name: web
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install -r requirements.txt
+      pip install gunicorn  # Добавьте эту строку для установки Gunicorn
     startCommand: gunicorn -b 0.0.0.0:$PORT app:app
 
